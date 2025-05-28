@@ -2,10 +2,10 @@ package edu.dyds.movies.data
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import edu.dyds.movies.data.external.RemoteMovie
 import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.entity.QualifiedMovie
-import edu.dyds.movies.domain.entity.RemoteMovie
-import edu.dyds.movies.domain.entity.RemoteResult
+import edu.dyds.movies.data.external.RemoteResult
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*

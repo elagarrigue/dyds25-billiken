@@ -1,6 +1,6 @@
 package edu.dyds.movies.data.local
 
-import edu.dyds.movies.domain.entity.RemoteMovie
+import edu.dyds.movies.data.external.RemoteMovie
 
 private val cacheMovies: MutableList<RemoteMovie> = mutableListOf()
 
