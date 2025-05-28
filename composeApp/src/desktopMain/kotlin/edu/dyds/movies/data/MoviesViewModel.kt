@@ -16,8 +16,8 @@ import kotlinx.coroutines.launch
 private const val MIN_VOTE_AVERAGE = 6.0
 
 class MoviesViewModel(
-    private val tmdbHttpClient: HttpClient,
-) : ViewModel() {
+
+    private val tmdbHttpClient: HttpClient, ) : ViewModel() {
 
     private val cacheMovies: MutableList<RemoteMovie> = mutableListOf()
 
@@ -82,6 +82,8 @@ class MoviesViewModel(
             }
     }
 
+    //Esto deberia ir a data
+    //Llamar al usecase
     private suspend fun getMovieDetails(id: Int) =
         try {
             getTMDBMovieDetails(id)

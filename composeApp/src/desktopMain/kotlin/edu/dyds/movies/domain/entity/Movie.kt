@@ -18,6 +18,7 @@ data class Movie(
 
 data class QualifiedMovie(val movie: Movie, val isGoodMovie: Boolean)
 
+//Todo lo que viene de la API tiene que estar en data
 @Serializable
 data class RemoteResult(
     val page: Int,

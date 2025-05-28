@@ -12,6 +12,6 @@ class TheMoviesDataBase(
     suspend fun getPopularMovies(): RemoteResult =
         tmdbHttpClient.get("/3/discover/movie?sort_by=popularity.desc").body()
 
-    suspend fun getMovieDetails(id: Int): RemoteMovie =
+    suspend fun getMovieDetailsDB(id: Int): RemoteMovie =
         tmdbHttpClient.get("/3/movie/$id").body()
 }
