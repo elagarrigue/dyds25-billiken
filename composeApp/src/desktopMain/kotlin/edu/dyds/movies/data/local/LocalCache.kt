@@ -15,7 +15,7 @@ class LocalCache() {
     }
 
     fun hasMovies() : Boolean{
-        return cacheMovies.isEmpty()
+        return !cacheMovies.isEmpty()
     }
 
     fun clear() {

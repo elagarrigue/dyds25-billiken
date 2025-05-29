@@ -2,6 +2,9 @@
 
 package edu.dyds.movies.presentation.home
 
+import androidx.compose.foundation.Image
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -30,7 +33,7 @@ import org.jetbrains.compose.resources.stringResource
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    viewModel: MoviesViewModel,
+    viewModel: HomeViewModel,
     onGoodMovieClick: (Movie) -> Unit
 ) {
 
@@ -38,7 +41,7 @@ fun HomeScreen(
         viewModel.getAllMovies()
     }
 
-    val state by viewModel.moviesStateFlow.collectAsState(MoviesViewModel.MoviesUiState())
+    val state by viewModel.moviesStateFlow.collectAsState(HomeViewModel.MoviesUiState())
 
     MaterialTheme {
         Surface {
@@ -51,7 +54,8 @@ fun HomeScreen(
                     )
                 },
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-            ) { padding ->
+            ) {
+                padding ->
 
                 LoadingIndicator(state.isLoading)
 
@@ -63,6 +67,7 @@ fun HomeScreen(
         }
     }
 }
+
 
 @Composable
 private fun MovieGrid(
@@ -139,8 +144,8 @@ private fun BadMovieItem(movie: Movie) {
         onCloseRequest = { dialogState = false },
         visible = dialogState
     ) {
-        AsyncImage(
-            model = this::class.java.getResource("/images/too_bad.png")?.toString(),
+        Image(
+            painter = painterResource("images/too_bad.png"),
             contentDescription = null,
             contentScale = ContentScale.Fit,
             modifier = Modifier

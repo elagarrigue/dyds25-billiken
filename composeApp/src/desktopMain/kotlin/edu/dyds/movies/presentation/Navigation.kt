@@ -10,7 +10,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import edu.dyds.movies.di.MoviesDependencyInjector.getMoviesViewModel
+import edu.dyds.movies.di.MoviesDependencyInjector.getDetailsViewModel
+import edu.dyds.movies.di.MoviesDependencyInjector.getHomeViewModel
 import edu.dyds.movies.presentation.detail.DetailScreen
 import edu.dyds.movies.presentation.home.HomeScreen
 
@@ -33,7 +34,7 @@ fun Navigation() {
 private fun NavGraphBuilder.homeDestination(navController: NavHostController) {
     composable(HOME) {
         HomeScreen(
-            viewModel = getMoviesViewModel(),
+            viewModel = getHomeViewModel(),
             onGoodMovieClick = {
                 navController.navigate("$DETAIL/${it.id}")
             }
@@ -50,7 +51,7 @@ private fun NavGraphBuilder.detailDestination(navController: NavHostController) 
 
         movieId?.let {
             DetailScreen(
-                getMoviesViewModel(),
+                getDetailsViewModel(),
                 it,
                 onBack = { navController.popBackStack() })
         }
