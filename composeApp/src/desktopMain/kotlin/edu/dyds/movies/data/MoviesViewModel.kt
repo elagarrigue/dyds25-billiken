@@ -82,8 +82,7 @@ class MoviesViewModel(
             }
     }
 
-    //Esto deberia ir a data
-    //Llamar al usecase
+
     private suspend fun getMovieDetails(id: Int) =
         try {
             getTMDBMovieDetails(id)

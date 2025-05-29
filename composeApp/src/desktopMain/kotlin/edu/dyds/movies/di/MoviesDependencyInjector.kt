@@ -3,7 +3,6 @@ package edu.dyds.movies.di
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import edu.dyds.movies.data.MovieRepositoryImpl
-import edu.dyds.movies.data.MoviesViewModel
 import edu.dyds.movies.data.external.TheMoviesDataBase
 import edu.dyds.movies.data.local.LocalCache
 import edu.dyds.movies.domain.repository.MovieRepository
@@ -44,7 +43,7 @@ object MoviesDependencyInjector {
     private val TMDB : TheMoviesDataBase = TheMoviesDataBase(tmdbHttpClient)
     private val localCache : LocalCache = LocalCache()
 
-    private val RepositoryImpl : MovieRepository =  MovieRepositoryImpl(localCache,TMDB);
+    private val RepositoryImpl : MovieRepository =  MovieRepositoryImpl(localCache,TMDB)
 
     private val MovieDetailsUseCase : GetMovieDetailsUseCase = GetMovieDetailsUseCase(RepositoryImpl)
 
