@@ -13,7 +13,6 @@ class HomeViewModel(private val useCase : GetPopularMoviesUseCase) : ViewModel()
     private val moviesStateMutableStateFlow = MutableStateFlow(MoviesUiState())
     val moviesStateFlow: Flow<MoviesUiState> = moviesStateMutableStateFlow
 
-    //PREGUNTAR SI PONEW LAUNCHEFFECT EN HOME SCREEN
     init {
         getAllMovies()
     }

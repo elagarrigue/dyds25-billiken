@@ -3,7 +3,6 @@ package edu.dyds.movies.data
 import edu.dyds.movies.data.external.TheMoviesDataBase
 import edu.dyds.movies.data.local.LocalCache
 import edu.dyds.movies.domain.entity.Movie
-import edu.dyds.movies.domain.entity.QualifiedMovie
 import edu.dyds.movies.data.external.RemoteMovie
 import edu.dyds.movies.domain.repository.MovieRepository
 

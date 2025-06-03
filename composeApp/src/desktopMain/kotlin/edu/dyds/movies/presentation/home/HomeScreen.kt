@@ -35,8 +35,6 @@ fun HomeScreen(
     viewModel: HomeViewModel,
     onGoodMovieClick: (Movie) -> Unit
 ) {
-
-    //PREGUNTAR SI SACAR
     LaunchedEffect(Unit) {
         viewModel.getAllMovies()
     }

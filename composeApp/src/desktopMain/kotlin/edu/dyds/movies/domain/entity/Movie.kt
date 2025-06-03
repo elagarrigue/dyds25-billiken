@@ -1,8 +1,5 @@
 package edu.dyds.movies.domain.entity
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-
 data class Movie(
     val id: Int,
     val title: String,
@@ -18,6 +15,5 @@ data class Movie(
 
 data class QualifiedMovie(val movie: Movie, val isGoodMovie: Boolean)
 
-//Todo lo que viene de la API tiene que estar en data
 
 
