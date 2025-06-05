@@ -13,10 +13,6 @@ class HomeViewModel(private val useCase : GetPopularMoviesUseCase) : ViewModel()
     private val moviesStateMutableStateFlow = MutableStateFlow(MoviesUiState())
     val moviesStateFlow: Flow<MoviesUiState> = moviesStateMutableStateFlow
 
-    init {
-        getAllMovies()
-    }
-
     fun getAllMovies() {
         viewModelScope.launch {
             moviesStateMutableStateFlow.emit(
