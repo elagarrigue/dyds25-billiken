@@ -1,16 +1,16 @@
 package edu.dyds.movies.data.local
 
-import edu.dyds.movies.data.external.RemoteMovie
+import edu.dyds.movies.domain.entity.Movie
 
-private val cacheMovies: MutableList<RemoteMovie> = mutableListOf()
+class MoviesLocalSource() {
 
-class LocalCache() {
+    private val cacheMovies: MutableList<Movie> = mutableListOf()
 
-    fun getMovies() : MutableList<RemoteMovie>{
+    fun getMovies() : MutableList<Movie>{
         return cacheMovies
     }
 
-    fun addMovies(movies : Collection<RemoteMovie>){
+    fun addMovies(movies : Collection<Movie>){
         cacheMovies.addAll(movies)
     }
 

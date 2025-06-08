@@ -7,7 +7,7 @@ import io.ktor.client.request.get
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-class TheMoviesDataBase(
+class MoviesExternalSource(
     private val tmdbHttpClient: HttpClient,
 ) {
     suspend fun getPopularMovies(): RemoteResult =

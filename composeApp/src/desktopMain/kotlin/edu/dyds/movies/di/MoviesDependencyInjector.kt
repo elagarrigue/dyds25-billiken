@@ -3,8 +3,8 @@ package edu.dyds.movies.di
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import edu.dyds.movies.data.MovieRepositoryImpl
-import edu.dyds.movies.data.external.TheMoviesDataBase
-import edu.dyds.movies.data.local.LocalCache
+import edu.dyds.movies.data.external.MoviesExternalSource
+import edu.dyds.movies.data.local.MoviesLocalSource
 import edu.dyds.movies.domain.repository.MovieRepository
 import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCase
 import edu.dyds.movies.domain.usecase.GetPopularMoviesUseCase
@@ -40,22 +40,23 @@ object MoviesDependencyInjector {
             }
         }
 
-    private val TMDB : TheMoviesDataBase = TheMoviesDataBase(tmdbHttpClient)
-    private val localCache : LocalCache = LocalCache()
+    private val moviesExternalSource : MoviesExternalSource = MoviesExternalSource(tmdbHttpClient)
 
-    private val RepositoryImpl : MovieRepository =  MovieRepositoryImpl(localCache,TMDB)
+    private val moviesLocalSource : MoviesLocalSource = MoviesLocalSource()
 
-    private val MovieDetailsUseCase : GetMovieDetailsUseCase = GetMovieDetailsUseCase(RepositoryImpl)
+    private val repositoryImpl : MovieRepository =  MovieRepositoryImpl(moviesLocalSource, moviesExternalSource)
 
-    private val PopularMoviesUseCase : GetPopularMoviesUseCase = GetPopularMoviesUseCase(RepositoryImpl)
+    private val movieDetailsUseCase : GetMovieDetailsUseCase = GetMovieDetailsUseCase(repositoryImpl)
+
+    private val popularMoviesUseCase : GetPopularMoviesUseCase = GetPopularMoviesUseCase(repositoryImpl)
 
     @Composable
     fun getDetailsViewModel(): DetailViewModel {
-        return viewModel { DetailViewModel(MovieDetailsUseCase) }
+        return viewModel { DetailViewModel(movieDetailsUseCase) }
     }
 
     @Composable
     fun getHomeViewModel(): HomeViewModel {
-        return viewModel { HomeViewModel(PopularMoviesUseCase) }
+        return viewModel { HomeViewModel(popularMoviesUseCase) }
     }
 }
