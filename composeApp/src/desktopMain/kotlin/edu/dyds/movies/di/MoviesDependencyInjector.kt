@@ -8,8 +8,10 @@ import edu.dyds.movies.data.external.TheMovieDataBase
 import edu.dyds.movies.data.local.LocalCache
 import edu.dyds.movies.data.local.MoviesLocalSource
 import edu.dyds.movies.domain.repository.MovieRepository
-import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCase
-import edu.dyds.movies.domain.usecase.GetPopularMoviesUseCase
+import edu.dyds.movies.domain.usecase.detail.GetMovieDetailsUseCase
+import edu.dyds.movies.domain.usecase.detail.GetMovieDetailsUseCaseImpl
+import edu.dyds.movies.domain.usecase.home.GetPopularMoviesUseCase
+import edu.dyds.movies.domain.usecase.home.GetPopularMoviesUseCaseImpl
 import edu.dyds.movies.presentation.detail.DetailViewModel
 import edu.dyds.movies.presentation.home.HomeViewModel
 import io.ktor.client.*
@@ -48,9 +50,9 @@ object MoviesDependencyInjector {
 
     private val repositoryImpl: MovieRepository = MovieRepositoryImpl(localCache, theMovieDataBase)
 
-    private val movieDetailsUseCase: GetMovieDetailsUseCase = GetMovieDetailsUseCase(repositoryImpl)
+    private val movieDetailsUseCase: GetMovieDetailsUseCase = GetMovieDetailsUseCaseImpl(repositoryImpl)
 
-    private val popularMoviesUseCase: GetPopularMoviesUseCase = GetPopularMoviesUseCase(repositoryImpl)
+    private val popularMoviesUseCase: GetPopularMoviesUseCase = GetPopularMoviesUseCaseImpl(repositoryImpl)
 
     @Composable
     fun getDetailsViewModel(): DetailViewModel {
