@@ -6,7 +6,7 @@ import edu.dyds.movies.domain.entity.Movie
 
 private const val MIN_VOTE_AVERAGE = 6.0
 
-class GetPopularMoviesUseCase (private val movieRepository: MovieRepository) {
+class GetPopularMoviesUseCase(private val movieRepository: MovieRepository) {
 
     suspend fun getAllMovies(): List<QualifiedMovie> {
         return movieRepository.getPopularMovies().sortAndMap()

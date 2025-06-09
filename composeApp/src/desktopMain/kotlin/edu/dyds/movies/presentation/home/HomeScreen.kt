@@ -52,8 +52,7 @@ fun HomeScreen(
                     )
                 },
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-            ) {
-                padding ->
+            ) { padding ->
 
                 LoadingIndicator(state.isLoading)
 

@@ -42,15 +42,15 @@ object MoviesDependencyInjector {
             }
         }
 
-    private val theMovieDataBase : MoviesExternalSource = TheMovieDataBase(tmdbHttpClient)
+    private val theMovieDataBase: MoviesExternalSource = TheMovieDataBase(tmdbHttpClient)
 
-    private val localCache : MoviesLocalSource = LocalCache()
+    private val localCache: MoviesLocalSource = LocalCache()
 
-    private val repositoryImpl : MovieRepository =  MovieRepositoryImpl(localCache, theMovieDataBase)
+    private val repositoryImpl: MovieRepository = MovieRepositoryImpl(localCache, theMovieDataBase)
 
-    private val movieDetailsUseCase : GetMovieDetailsUseCase = GetMovieDetailsUseCase(repositoryImpl)
+    private val movieDetailsUseCase: GetMovieDetailsUseCase = GetMovieDetailsUseCase(repositoryImpl)
 
-    private val popularMoviesUseCase : GetPopularMoviesUseCase = GetPopularMoviesUseCase(repositoryImpl)
+    private val popularMoviesUseCase: GetPopularMoviesUseCase = GetPopularMoviesUseCase(repositoryImpl)
 
     @Composable
     fun getDetailsViewModel(): DetailViewModel {

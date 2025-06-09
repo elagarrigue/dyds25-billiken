@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 
-class HomeViewModel(private val useCase : GetPopularMoviesUseCase) : ViewModel() {
+class HomeViewModel(private val useCase: GetPopularMoviesUseCase) : ViewModel() {
     private val moviesStateMutableStateFlow = MutableStateFlow(MoviesUiState())
     val moviesStateFlow: Flow<MoviesUiState> = moviesStateMutableStateFlow
 
