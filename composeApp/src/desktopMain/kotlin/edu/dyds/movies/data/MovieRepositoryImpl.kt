@@ -11,20 +11,18 @@ class MovieRepositoryImpl(
 ) : MovieRepository {
 
     override suspend fun getMovieDetail(id: Int): Movie? {
-        return moviesExternalSource.getMovieDetailsDB(id).toDomainMovie()
+        return try {
+            moviesExternalSource.getMovieDetailsDB(id)
+        } catch (e: Exception) { null }
     }
 
     override suspend fun getPopularMovies(): List<Movie> {
         if (!moviesLocalSource.hasMovies()) {
             try {
-                moviesExternalSource.getPopularMovies().results.apply {
                     moviesLocalSource.clear()
-                    val listMovies: MutableList<Movie> = mutableListOf()
-                    this.forEach { remoteMovie -> listMovies.add(remoteMovie.toDomainMovie()) }
-                    moviesLocalSource.addMovies(listMovies)
-                }
+                    moviesLocalSource.addMovies(moviesExternalSource.getPopularMovies())
             } catch (e: Exception) {
-                emptyList()
+                emptyList<Movie>()
             }
         }
         return moviesLocalSource.getMovies()

@@ -7,14 +7,20 @@ import io.ktor.client.request.get
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-class TheMovieDataBase(
+
+class TMDBExternalSource(
     private val tmdbHttpClient: HttpClient,
 ) : MoviesExternalSource {
-    override suspend fun getPopularMovies(): RemoteResult =
-        tmdbHttpClient.get("/3/discover/movie?sort_by=popularity.desc").body()
 
-    override suspend fun getMovieDetailsDB(id: Int): RemoteMovie =
-        tmdbHttpClient.get("/3/movie/$id").body()
+    override suspend fun getPopularMovies(): List<Movie> {
+        val remoteResult: RemoteResult = tmdbHttpClient.get("/3/discover/movie?sort_by=popularity.desc").body()
+        return remoteResult.results.map { it.toDomainMovie() }
+    }
+
+    override suspend fun getMovieDetailsDB(id: Int): Movie {
+        val remoteMovie: RemoteMovie = tmdbHttpClient.get("/3/movie/$id").body()
+        return remoteMovie.toDomainMovie()
+    }
 }
 
 @Serializable
