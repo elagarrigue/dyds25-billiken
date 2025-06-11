@@ -1,22 +1,27 @@
-package edu.dyds.movies
+package edu.dyds.movies.data.external
 
+import edu.dyds.movies.domain.entity.Movie
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-data class Movie(
-    val id: Int,
-    val title: String,
-    val overview: String,
-    val releaseDate: String,
-    val poster: String,
-    val backdrop: String?,
-    val originalTitle: String,
-    val originalLanguage: String,
-    val popularity: Double,
-    val voteAverage: Double
-)
 
-data class QualifiedMovie(val movie: Movie, val isGoodMovie: Boolean)
+class TMDBExternalSource(
+    private val tmdbHttpClient: HttpClient,
+) : MoviesExternalSource {
+
+    override suspend fun getPopularMovies(): List<Movie> {
+        val remoteResult: RemoteResult = tmdbHttpClient.get("/3/discover/movie?sort_by=popularity.desc").body()
+        return remoteResult.results.map { it.toDomainMovie() }
+    }
+
+    override suspend fun getMovieDetailsDB(id: Int): Movie {
+        val remoteMovie: RemoteMovie = tmdbHttpClient.get("/3/movie/$id").body()
+        return remoteMovie.toDomainMovie()
+    }
+}
 
 @Serializable
 data class RemoteResult(
@@ -55,4 +60,3 @@ data class RemoteMovie(
         )
     }
 }
-
