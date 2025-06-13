@@ -1,10 +1,11 @@
+package viewModelTests
+
 import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.usecase.detail.GetMovieDetailsUseCase
 import edu.dyds.movies.presentation.detail.DetailViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertTrue
+import junit.framework.TestCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
@@ -43,7 +44,7 @@ class DetailViewModelTest {
                 popularity = 9.8,
                 voteAverage = 8.7
             )
-        coEvery { useCase.getMovieDetail(any())} returns fakeMovie
+        coEvery { useCase.getMovieDetail(any()) } returns fakeMovie
 
         //Act
         val collectedStates = mutableListOf<DetailViewModel.MovieDetailUiState>()
@@ -59,15 +60,15 @@ class DetailViewModelTest {
         job.join()
 
         // Assert
-        assertTrue(collectedStates.first().isLoading)
-        assertFalse(collectedStates.last().isLoading)
+        TestCase.assertTrue(collectedStates.first().isLoading)
+        TestCase.assertFalse(collectedStates.last().isLoading)
         assertEquals(fakeMovie, collectedStates.last().movie)
     }
 
     @Test
     fun `getMovieDetail emits loading then null`() = runTest {
         //Arrange
-        coEvery { useCase.getMovieDetail(any())} returns null
+        coEvery { useCase.getMovieDetail(any()) } returns null
 
         //Act
         val collectedStates = mutableListOf<DetailViewModel.MovieDetailUiState>()
@@ -81,8 +82,8 @@ class DetailViewModelTest {
         job.join()
 
         //Assert
-        assertTrue(collectedStates.first().isLoading)
-        assertFalse(collectedStates.last().isLoading)
+        TestCase.assertTrue(collectedStates.first().isLoading)
+        TestCase.assertFalse(collectedStates.last().isLoading)
         assertEquals(null, collectedStates.last().movie)
 
     }

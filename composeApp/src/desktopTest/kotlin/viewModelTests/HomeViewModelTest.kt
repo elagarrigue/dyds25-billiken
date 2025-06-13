@@ -1,11 +1,12 @@
+package viewModelTests
+
 import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.entity.QualifiedMovie
 import edu.dyds.movies.domain.usecase.home.GetPopularMoviesUseCase
 import edu.dyds.movies.presentation.home.HomeViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertTrue
+import junit.framework.TestCase
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
@@ -65,8 +66,8 @@ class HomeViewModelTest {
         val collectedStates = viewModel.moviesStateFlow.take(2).toList()
 
         // Assert
-        assertTrue(collectedStates.first().isLoading)
-        assertFalse(collectedStates.last().isLoading)
+        TestCase.assertTrue(collectedStates.first().isLoading)
+        TestCase.assertFalse(collectedStates.last().isLoading)
         assertEquals(mockMovies, collectedStates.last().movies)
     }
 }
