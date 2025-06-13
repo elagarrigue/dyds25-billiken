@@ -44,7 +44,7 @@ class DetailViewModelTest {
                 popularity = 9.8,
                 voteAverage = 8.7
             )
-        coEvery { useCase.getMovieDetail(any()) } returns fakeMovie
+        coEvery {useCase.getMovieDetail(any())} returns fakeMovie
 
         //Act
         val collectedStates = mutableListOf<DetailViewModel.MovieDetailUiState>()

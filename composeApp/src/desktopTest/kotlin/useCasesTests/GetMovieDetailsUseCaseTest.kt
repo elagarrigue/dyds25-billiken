@@ -1,0 +1,4 @@
+package useCasesTests
+
+class GetMovieDetailsUseCaseTest {
+}
