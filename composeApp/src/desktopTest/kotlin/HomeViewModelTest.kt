@@ -26,7 +26,7 @@ class HomeViewModelTest {
     @Test
     fun `getAllMovies emits loading then movies`() = runTest {
         //Arrange
-        val qMovie1 =
+        val fakeQualifiedMovie1 =
             QualifiedMovie(
                 movie = Movie(
                     id = 1,
@@ -41,7 +41,7 @@ class HomeViewModelTest {
                     voteAverage = 8.7
                 ), true
             )
-        val qMovie2 =
+        val fakeQualifiedMovie2 =
             QualifiedMovie(
                 movie = Movie(
                     id = 2,
@@ -57,7 +57,7 @@ class HomeViewModelTest {
                 ), false
             )
 
-        val mockMovies = listOf(qMovie1, qMovie2)
+        val mockMovies = listOf(fakeQualifiedMovie1, fakeQualifiedMovie2)
         coEvery { useCase.getAllMovies() } returns mockMovies
 
         // Act
