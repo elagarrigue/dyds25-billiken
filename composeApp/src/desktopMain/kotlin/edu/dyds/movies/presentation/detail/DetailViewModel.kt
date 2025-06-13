@@ -29,7 +29,7 @@ class DetailViewModel(private val useCase: GetMovieDetailsUseCase) : ViewModel()
     }
 
     data class MovieDetailUiState(
-        val isLoading: Boolean = false,
+        val isLoading: Boolean = true,
         val movie: Movie? = null,
     )
 }

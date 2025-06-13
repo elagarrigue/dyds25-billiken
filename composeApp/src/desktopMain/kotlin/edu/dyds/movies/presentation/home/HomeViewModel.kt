@@ -27,7 +27,7 @@ class HomeViewModel(private val useCase: GetPopularMoviesUseCase) : ViewModel() 
     }
 
     data class MoviesUiState(
-        val isLoading: Boolean = false,
+        val isLoading: Boolean = true,
         val movies: List<QualifiedMovie> = emptyList(),
     )
 
