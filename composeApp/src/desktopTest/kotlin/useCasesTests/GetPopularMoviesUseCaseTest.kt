@@ -66,7 +66,7 @@ class GetPopularMoviesUseCaseTest {
         coEvery { movieRepository.getPopularMovies() } returns fakeMovies
 
         //Act
-        val result: List<QualifiedMovie> = useCase.getAllMovies()
+        val result = useCase.getAllMovies()
 
         //Assert
         assertEquals("Good Movie", result[0].movie.title)
@@ -80,7 +80,7 @@ class GetPopularMoviesUseCaseTest {
         coEvery { movieRepository.getPopularMovies() } returns emptyList()
 
         //Act
-        val result: List<QualifiedMovie> = useCase.getAllMovies()
+        val result = useCase.getAllMovies()
 
         //Assert
         assertEquals(0, result.size)
