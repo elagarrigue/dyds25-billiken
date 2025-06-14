@@ -1,0 +1,104 @@
+package repositoryTest
+
+import edu.dyds.movies.data.MovieRepositoryImpl
+import edu.dyds.movies.data.external.MoviesExternalSource
+import edu.dyds.movies.data.local.MoviesLocalSource
+import edu.dyds.movies.domain.entity.Movie
+import io.mockk.coEvery
+import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
+
+class MovieRepositoryImplTest {
+
+    private lateinit var localSource: MoviesLocalSource
+    private lateinit var externalSource: MoviesExternalSource
+    private lateinit var repository: MovieRepositoryImpl
+
+    @BeforeTest
+    fun setUp() {
+        localSource = mockk()
+        externalSource = mockk()
+        repository = MovieRepositoryImpl(localSource, externalSource)
+    }
+
+    @Test
+    fun `getMovieDetail returns movie from external source`() = runTest {
+
+        // Arrange
+        val movie = Movie(1, "title", "overview", "2024-01-01", "poster", "backdrop", "originalTitle", "en", 1.0, 2.0)
+        coEvery { externalSource.getMovieDetailsDB(1) } returns movie
+
+        // Act
+        val result = repository.getMovieDetail(1)
+
+        // Assert
+        assertEquals(movie, result)
+    }
+
+    @Test
+    fun `getMovieDetail returns null when no movie with that name`() = runTest {
+
+        // Arrange
+        coEvery { externalSource.getMovieDetailsDB(1) } throws Exception("error")
+
+        // Act
+        val result = repository.getMovieDetail(1)
+
+        // Assert
+        assertNull(result)
+    }
+
+    @Test
+    fun `getPopularMovies updates local source when it is empty and returns new data from external`() = runTest {
+
+        // Arrange
+        coEvery { localSource.hasMovies() } returns false
+        coEvery { localSource.clear() } returns Unit
+        val movies = mutableListOf(Movie(1, "title", "overview", "2024-01-01", "poster", "backdrop", "originalTitle", "en", 1.0, 2.0))
+        coEvery { externalSource.getPopularMovies() } returns movies
+        coEvery { localSource.addMovies(movies) } returns Unit
+        coEvery { localSource.getMovies() } returns movies
+
+        // Act
+        val result = repository.getPopularMovies()
+
+        // Assert
+        assertEquals(movies, result)
+    }
+
+    @Test
+    fun `getPopularMovies returns empty list if external source fails`() = runTest {
+
+        // Arrange
+        coEvery { localSource.hasMovies() } returns false
+        coEvery { localSource.clear() } returns Unit
+        coEvery { externalSource.getPopularMovies() } throws Exception("error")
+        coEvery { localSource.addMovies(any()) } returns Unit
+        coEvery { localSource.getMovies() } returns mutableListOf()
+
+        // Act
+        val result = repository.getPopularMovies()
+
+        // Assert
+        assertEquals(emptyList(), result)
+    }
+
+    @Test
+    fun `getPopularMovies returns local movies when local is not empty`() = runTest {
+
+        // Arrange
+        coEvery { localSource.hasMovies() } returns true
+        val movies = mutableListOf(Movie(1, "title", "overview", "2024-01-01", "poster", "backdrop", "originalTitle", "en", 1.0, 2.0))
+        coEvery { localSource.getMovies() } returns movies
+
+        // Act
+        val result = repository.getPopularMovies()
+
+        // Assert
+        assertEquals(movies, result)
+    }
+}
