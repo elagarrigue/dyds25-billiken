@@ -39,8 +39,9 @@ class LocalCacheTest {
     fun `hasMovies returns true when cache is not empty`() {
         // Arrange
         val movie = Movie(1, "title", "overview", "2024-01-01", "poster", "backdrop", "originalTitle", "en", 1.0, 2.0)
+        // Act
         cache.addMovies(listOf(movie))
-        // Act & Assert
+         //Assert
         assertTrue(cache.hasMovies())
     }
 
