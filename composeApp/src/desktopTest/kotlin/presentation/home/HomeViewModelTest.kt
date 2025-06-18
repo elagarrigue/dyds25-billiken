@@ -9,7 +9,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -17,7 +16,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Assert
+import org.junit.Assert.assertFalse
 import org.junit.Before
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -77,13 +76,12 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `getAllMovies emits loading`() = runTest {
+    fun `getAllMovies emits loading then movies`() = runTest {
         //Arrange
         val testDispatcher = StandardTestDispatcher(testScheduler)
         val scope = CoroutineScope(testDispatcher)
         scope.launch {
             viewModel.moviesStateFlow
-                .take(1)
                 .collect { collectedStates.add(it) }
         }
         //Act
@@ -91,23 +89,8 @@ class HomeViewModelTest {
         advanceUntilIdle()
         //Assert
         assertTrue(collectedStates.first().isLoading)
-    }
-
-    @Test
-    fun `getAllMovies emits movies`() = runTest {
-        //Arrange
-        val testDispatcher = StandardTestDispatcher(testScheduler)
-        val scope = CoroutineScope(testDispatcher)
-        scope.launch {
-            viewModel.moviesStateFlow
-                .take(2)
-                .collect { collectedStates.add(it) }
-        }
-        //Act
-        viewModel.getAllMovies()
-        advanceUntilIdle()
-        //Assert
-        Assert.assertFalse(collectedStates.last().isLoading)
+        assertEquals(emptyList<QualifiedMovie>(),collectedStates.first().movies)
+        assertFalse(collectedStates.last().isLoading)
         assertEquals(mockMovies, collectedStates.last().movies)
     }
 }
