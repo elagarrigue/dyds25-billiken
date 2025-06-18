@@ -17,6 +17,19 @@ class MovieRepositoryImplTest {
     private lateinit var localSource: MoviesLocalSource
     private lateinit var externalSource: MoviesExternalSource
     private lateinit var repository: MovieRepositoryImpl
+    private val fakeMovie =
+        Movie(
+            id = 1,
+            title = "Movie 1",
+            overview = "Some overview",
+            releaseDate = "2023-01-01",
+            poster = "poster.jpg",
+            backdrop = "backdrop.jpg",
+            originalTitle = "Original Movie 1",
+            originalLanguage = "en",
+            popularity = 9.8,
+            voteAverage = 8.7
+        )
 
     @BeforeTest
     fun setUp() {
@@ -27,21 +40,18 @@ class MovieRepositoryImplTest {
 
     @Test
     fun `getMovieDetail returns movie from external source`() = runTest {
-
         // Arrange
-        val movie = Movie(1, "title", "overview", "2024-01-01", "poster", "backdrop", "originalTitle", "en", 1.0, 2.0)
-        coEvery { externalSource.getMovieDetailsDB(1) } returns movie
+        coEvery { externalSource.getMovieDetailsDB(1) } returns fakeMovie
 
         // Act
         val result = repository.getMovieDetail(1)
 
         // Assert
-        assertEquals(movie, result)
+        assertEquals(fakeMovie, result)
     }
 
     @Test
     fun `getMovieDetail returns null when no movie with that name`() = runTest {
-
         // Arrange
         coEvery { externalSource.getMovieDetailsDB(1) } throws Exception("error")
 
@@ -54,24 +64,10 @@ class MovieRepositoryImplTest {
 
     @Test
     fun `getPopularMovies updates local source when it is empty and returns new data from external`() = runTest {
-
         // Arrange
         coEvery { localSource.hasMovies() } returns false
         coEvery { localSource.clear() } returns Unit
-        val movies = mutableListOf(
-            Movie(
-                1,
-                "title",
-                "overview",
-                "2024-01-01",
-                "poster",
-                "backdrop",
-                "originalTitle",
-                "en",
-                1.0,
-                2.0
-            )
-        )
+        val movies = mutableListOf(fakeMovie)
         coEvery { externalSource.getPopularMovies() } returns movies
         coEvery { localSource.addMovies(movies) } returns Unit
         coEvery { localSource.getMovies() } returns movies
@@ -85,7 +81,6 @@ class MovieRepositoryImplTest {
 
     @Test
     fun `getPopularMovies returns empty list if external source fails`() = runTest {
-
         // Arrange
         coEvery { localSource.hasMovies() } returns false
         coEvery { localSource.clear() } returns Unit
@@ -102,23 +97,9 @@ class MovieRepositoryImplTest {
 
     @Test
     fun `getPopularMovies returns local movies when local is not empty`() = runTest {
-
         // Arrange
         coEvery { localSource.hasMovies() } returns true
-        val movies = mutableListOf(
-            Movie(
-                1,
-                "title",
-                "overview",
-                "2024-01-01",
-                "poster",
-                "backdrop",
-                "originalTitle",
-                "en",
-                1.0,
-                2.0
-            )
-        )
+        val movies = mutableListOf(fakeMovie)
         coEvery { localSource.getMovies() } returns movies
 
         // Act

@@ -10,14 +10,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.test.*
 import org.junit.After
 import org.junit.Assert.assertFalse
-import org.junit.Before
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -58,10 +54,9 @@ class HomeViewModelTest {
         )
     private lateinit var mockMovies: List<QualifiedMovie>
     private val collectedStates = mutableListOf<HomeViewModel.MoviesUiState>()
-
     private val testDispatcher = StandardTestDispatcher()
 
-    @Before
+    @BeforeTest
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         useCase = mockk()
@@ -89,7 +84,7 @@ class HomeViewModelTest {
         advanceUntilIdle()
         //Assert
         assertTrue(collectedStates.first().isLoading)
-        assertEquals(emptyList<QualifiedMovie>(),collectedStates.first().movies)
+        assertEquals(emptyList<QualifiedMovie>(), collectedStates.first().movies)
         assertFalse(collectedStates.last().isLoading)
         assertEquals(mockMovies, collectedStates.last().movies)
     }

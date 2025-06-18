@@ -7,15 +7,15 @@ import edu.dyds.movies.domain.usecase.home.GetPopularMoviesUseCaseImpl
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class GetPopularMoviesUseCaseTest {
     private lateinit var movieRepository: MovieRepository
-    private lateinit var useCase : GetPopularMoviesUseCase
+    private lateinit var useCase: GetPopularMoviesUseCase
 
-    @Before
+    @BeforeTest
     fun setUp() {
         movieRepository = mockk()
         useCase = GetPopularMoviesUseCaseImpl(movieRepository)

@@ -2,15 +2,24 @@ package data.local
 
 import edu.dyds.movies.data.local.LocalCache
 import edu.dyds.movies.domain.entity.Movie
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 class LocalCacheTest {
 
     private lateinit var cache: LocalCache
+    private val fakeMovie =
+        Movie(
+            id = 1,
+            title = "Movie 1",
+            overview = "Some overview",
+            releaseDate = "2023-01-01",
+            poster = "poster.jpg",
+            backdrop = "backdrop.jpg",
+            originalTitle = "Original Movie 1",
+            originalLanguage = "en",
+            popularity = 9.8,
+            voteAverage = 8.7
+        )
 
     @BeforeTest
     fun setUp() {
@@ -21,27 +30,26 @@ class LocalCacheTest {
     fun `getMovies returns empty list`() {
         // Act
         val movies = cache.getMovies()
+
         // Assert
         assertTrue(movies.isEmpty())
     }
 
     @Test
     fun `addMovies adds movies to cache`() {
-        // Arrange
-        val movie = Movie(1, "title", "overview", "2024-01-01", "poster", "backdrop", "originalTitle", "en", 1.0, 2.0)
         // Act
-        cache.addMovies(listOf(movie))
+        cache.addMovies(listOf(fakeMovie))
+
         // Assert
-        assertEquals(listOf(movie), cache.getMovies())
+        assertEquals(listOf(fakeMovie), cache.getMovies())
     }
 
     @Test
     fun `hasMovies returns true when cache is not empty`() {
-        // Arrange
-        val movie = Movie(1, "title", "overview", "2024-01-01", "poster", "backdrop", "originalTitle", "en", 1.0, 2.0)
         // Act
-        cache.addMovies(listOf(movie))
-         //Assert
+        cache.addMovies(listOf(fakeMovie))
+
+        //Assert
         assertTrue(cache.hasMovies())
     }
 
@@ -54,10 +62,11 @@ class LocalCacheTest {
     @Test
     fun `clear removes all movies from cache`() {
         // Arrange
-        val movie = Movie(1, "title", "overview", "2024-01-01", "poster", "backdrop", "originalTitle", "en", 1.0, 2.0)
-        cache.addMovies(listOf(movie))
+        cache.addMovies(listOf(fakeMovie))
+
         // Act
         cache.clear()
+
         // Assert
         assertTrue(cache.getMovies().isEmpty())
     }

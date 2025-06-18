@@ -10,13 +10,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.test.*
 import org.junit.After
-import org.junit.Before
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -41,7 +37,7 @@ class DetailViewModelTest {
     private val collectedStates = mutableListOf<DetailViewModel.MovieDetailUiState>()
     private val testDispatcher = StandardTestDispatcher()
 
-    @Before
+    @BeforeTest
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         useCase = mockk()
@@ -63,9 +59,11 @@ class DetailViewModelTest {
             viewModel.movieDetailStateFlow
                 .collect { collectedStates.add(it) }
         }
+
         //Act
         viewModel.getMovieDetail(1)
         advanceUntilIdle()
+
         //Assert
         TestCase.assertTrue(collectedStates.first().isLoading)
         assertNull(collectedStates.first().movie)
@@ -83,9 +81,11 @@ class DetailViewModelTest {
             viewModel.movieDetailStateFlow
                 .collect { collectedStates.add(it) }
         }
+
         //Act
         viewModel.getMovieDetail(1)
         advanceUntilIdle()
+
         //Assert
         TestCase.assertTrue(collectedStates.first().isLoading)
         assertNull(collectedStates.first().movie)
