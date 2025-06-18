@@ -8,7 +8,6 @@ import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -55,55 +54,40 @@ class DetailViewModelTest {
     }
 
     @Test
-    fun `getMovieDetail emits loading`() = runTest {
+    fun `getMovieDetail emits loading then detailMovie`() = runTest {
         //Arrange
         val testDispatcher = StandardTestDispatcher(testScheduler)
         val scope = CoroutineScope(testDispatcher)
         scope.launch {
             viewModel.movieDetailStateFlow
-                .take(1)
-                .collect { collectedStates.add(it) }
-        }
-        //Act
-        viewModel.getMovieDetail(1)
-        advanceUntilIdle()
-        //Asser
-        assertTrue(collectedStates.first().isLoading)
-    }
-
-    @Test
-    fun `getMovieDetail emits loading then detail`() = runTest {
-        //Arrange
-        val testDispatcher = StandardTestDispatcher(testScheduler)
-        val scope = CoroutineScope(testDispatcher)
-        scope.launch {
-            viewModel.movieDetailStateFlow
-                .take(2)
                 .collect { collectedStates.add(it) }
         }
         //Act
         viewModel.getMovieDetail(1)
         advanceUntilIdle()
         //Assert
+        assertTrue(collectedStates.first().isLoading)
+        assertNull(collectedStates.first().movie)
         assertFalse(collectedStates.last().isLoading)
         assertEquals(fakeMovie, collectedStates.last().movie)
     }
 
     @Test
-    fun `getMovieDetail emits null`() = runTest {
+    fun `getMovieDetail emits loading then null`() = runTest {
         //Arrange
         coEvery { useCase.getMovieDetail(any()) } returns null
         val testDispatcher = StandardTestDispatcher(testScheduler)
         val scope = CoroutineScope(testDispatcher)
         scope.launch {
             viewModel.movieDetailStateFlow
-                .take(2)
                 .collect { collectedStates.add(it) }
         }
         //Act
         viewModel.getMovieDetail(1)
         advanceUntilIdle()
         //Assert
+        assertTrue(collectedStates.first().isLoading)
+        assertNull(collectedStates.first().movie)
         assertFalse(collectedStates.last().isLoading)
         assertNull(collectedStates.last().movie)
     }
