@@ -1,10 +1,11 @@
+package presentation.detail
+
 import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.usecase.detail.GetMovieDetailsUseCase
 import edu.dyds.movies.presentation.detail.DetailViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertTrue
+import junit.framework.TestCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -66,9 +67,9 @@ class DetailViewModelTest {
         viewModel.getMovieDetail(1)
         advanceUntilIdle()
         //Assert
-        assertTrue(collectedStates.first().isLoading)
+        TestCase.assertTrue(collectedStates.first().isLoading)
         assertNull(collectedStates.first().movie)
-        assertFalse(collectedStates.last().isLoading)
+        TestCase.assertFalse(collectedStates.last().isLoading)
         assertEquals(fakeMovie, collectedStates.last().movie)
     }
 
@@ -86,9 +87,9 @@ class DetailViewModelTest {
         viewModel.getMovieDetail(1)
         advanceUntilIdle()
         //Assert
-        assertTrue(collectedStates.first().isLoading)
+        TestCase.assertTrue(collectedStates.first().isLoading)
         assertNull(collectedStates.first().movie)
-        assertFalse(collectedStates.last().isLoading)
+        TestCase.assertFalse(collectedStates.last().isLoading)
         assertNull(collectedStates.last().movie)
     }
 }

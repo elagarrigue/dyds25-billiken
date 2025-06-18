@@ -1,4 +1,4 @@
-package useCasesTests
+package domain.usecase.detail
 
 import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.repository.MovieRepository

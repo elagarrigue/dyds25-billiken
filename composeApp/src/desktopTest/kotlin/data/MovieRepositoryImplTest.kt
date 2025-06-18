@@ -1,4 +1,4 @@
-package repositoryTest
+package data
 
 import edu.dyds.movies.data.MovieRepositoryImpl
 import edu.dyds.movies.data.external.MoviesExternalSource
@@ -58,7 +58,20 @@ class MovieRepositoryImplTest {
         // Arrange
         coEvery { localSource.hasMovies() } returns false
         coEvery { localSource.clear() } returns Unit
-        val movies = mutableListOf(Movie(1, "title", "overview", "2024-01-01", "poster", "backdrop", "originalTitle", "en", 1.0, 2.0))
+        val movies = mutableListOf(
+            Movie(
+                1,
+                "title",
+                "overview",
+                "2024-01-01",
+                "poster",
+                "backdrop",
+                "originalTitle",
+                "en",
+                1.0,
+                2.0
+            )
+        )
         coEvery { externalSource.getPopularMovies() } returns movies
         coEvery { localSource.addMovies(movies) } returns Unit
         coEvery { localSource.getMovies() } returns movies
@@ -92,7 +105,20 @@ class MovieRepositoryImplTest {
 
         // Arrange
         coEvery { localSource.hasMovies() } returns true
-        val movies = mutableListOf(Movie(1, "title", "overview", "2024-01-01", "poster", "backdrop", "originalTitle", "en", 1.0, 2.0))
+        val movies = mutableListOf(
+            Movie(
+                1,
+                "title",
+                "overview",
+                "2024-01-01",
+                "poster",
+                "backdrop",
+                "originalTitle",
+                "en",
+                1.0,
+                2.0
+            )
+        )
         coEvery { localSource.getMovies() } returns movies
 
         // Act

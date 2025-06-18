@@ -1,4 +1,4 @@
-package viewModelTests
+package presentation.home
 
 import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.entity.QualifiedMovie
@@ -17,7 +17,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Assert.assertFalse
+import org.junit.Assert
 import org.junit.Before
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -107,7 +107,7 @@ class HomeViewModelTest {
         viewModel.getAllMovies()
         advanceUntilIdle()
         //Assert
-        assertFalse(collectedStates.last().isLoading)
+        Assert.assertFalse(collectedStates.last().isLoading)
         assertEquals(mockMovies, collectedStates.last().movies)
     }
 }

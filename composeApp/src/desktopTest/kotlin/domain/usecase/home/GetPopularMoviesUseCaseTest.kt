@@ -1,7 +1,6 @@
-package useCasesTests
+package domain.usecase.home
 
 import edu.dyds.movies.domain.entity.Movie
-import edu.dyds.movies.domain.entity.QualifiedMovie
 import edu.dyds.movies.domain.repository.MovieRepository
 import edu.dyds.movies.domain.usecase.home.GetPopularMoviesUseCase
 import edu.dyds.movies.domain.usecase.home.GetPopularMoviesUseCaseImpl
