@@ -3,6 +3,7 @@ package presentation.home
 import edu.dyds.movies.domain.entity.QualifiedMovie
 import edu.dyds.movies.domain.usecase.home.GetPopularMoviesUseCase
 import edu.dyds.movies.presentation.home.HomeViewModel
+import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,8 +21,8 @@ import kotlin.test.assertTrue
 class HomeViewModelTest {
     private lateinit var useCase: GetPopularMoviesUseCase
     private lateinit var viewModel: HomeViewModel
-    private val fakeQualifiedMovie1: QualifiedMovie = mockk()
-    private val fakeQualifiedMovie2: QualifiedMovie = mockk()
+    private val fakeQualifiedMovie1 : QualifiedMovie = mockk()
+    private val fakeQualifiedMovie2 : QualifiedMovie = mockk()
     private val mockMovies: List<QualifiedMovie> = listOf(fakeQualifiedMovie1, fakeQualifiedMovie2)
     private val collectedStates = mutableListOf<HomeViewModel.MoviesUiState>()
     private val testDispatcher = StandardTestDispatcher()
@@ -31,6 +32,7 @@ class HomeViewModelTest {
         Dispatchers.setMain(testDispatcher)
         useCase = mockk()
         viewModel = HomeViewModel(useCase)
+        coEvery { useCase.getAllMovies() } returns mockMovies
     }
 
     @After
