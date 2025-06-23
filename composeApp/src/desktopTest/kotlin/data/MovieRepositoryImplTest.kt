@@ -5,6 +5,7 @@ import edu.dyds.movies.data.external.MoviesExternalSource
 import edu.dyds.movies.data.local.MoviesLocalSource
 import edu.dyds.movies.domain.entity.Movie
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
@@ -56,7 +57,6 @@ class MovieRepositoryImplTest {
         coEvery { localSource.hasMovies() } returns false
         val movies = mutableListOf(fakeMovie)
         coEvery { externalSource.getPopularMovies() } returns movies
-        coEvery { localSource.addMovies(movies) } returns Unit
         coEvery { localSource.getMovies() } returns movies
 
         // Act
@@ -64,6 +64,7 @@ class MovieRepositoryImplTest {
 
         // Assert
         assertEquals(movies, result)
+        coVerify { localSource.addMovies(movies) }
     }
 
     @Test
@@ -71,7 +72,6 @@ class MovieRepositoryImplTest {
         // Arrange
         coEvery { localSource.hasMovies() } returns false
         coEvery { externalSource.getPopularMovies() } throws Exception("error")
-        coEvery { localSource.addMovies(any()) } returns Unit
         coEvery { localSource.getMovies() } returns mutableListOf()
 
         // Act

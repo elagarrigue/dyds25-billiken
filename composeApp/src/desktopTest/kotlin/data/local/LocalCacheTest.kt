@@ -2,24 +2,13 @@ package data.local
 
 import edu.dyds.movies.data.local.LocalCache
 import edu.dyds.movies.domain.entity.Movie
+import io.mockk.mockk
 import kotlin.test.*
 
 class LocalCacheTest {
 
     private lateinit var cache: LocalCache
-    private val fakeMovie =
-        Movie(
-            id = 1,
-            title = "Movie 1",
-            overview = "Some overview",
-            releaseDate = "2023-01-01",
-            poster = "poster.jpg",
-            backdrop = "backdrop.jpg",
-            originalTitle = "Original Movie 1",
-            originalLanguage = "en",
-            popularity = 9.8,
-            voteAverage = 8.7
-        )
+    private val fakeMovie: Movie = mockk()
 
     @BeforeTest
     fun setUp() {
