@@ -32,6 +32,7 @@ kotlin {
             implementation(libs.ktor.client.contentnegotiation)
             implementation(libs.androidx.navigation.compose)
             implementation(libs.androidx.lifecycle.viewmodel.compose)
+            implementation("io.mockk:mockk:1.13.3")
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
