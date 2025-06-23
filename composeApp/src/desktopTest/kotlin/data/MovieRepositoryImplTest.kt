@@ -17,24 +17,12 @@ class MovieRepositoryImplTest {
     private lateinit var localSource: MoviesLocalSource
     private lateinit var externalSource: MoviesExternalSource
     private lateinit var repository: MovieRepositoryImpl
-    private val fakeMovie =
-        Movie(
-            id = 1,
-            title = "Movie 1",
-            overview = "Some overview",
-            releaseDate = "2023-01-01",
-            poster = "poster.jpg",
-            backdrop = "backdrop.jpg",
-            originalTitle = "Original Movie 1",
-            originalLanguage = "en",
-            popularity = 9.8,
-            voteAverage = 8.7
-        )
+    private val fakeMovie: Movie = mockk()
 
     @BeforeTest
     fun setUp() {
-        localSource = mockk()
-        externalSource = mockk()
+        localSource = mockk(relaxUnitFun = true)
+        externalSource = mockk(relaxUnitFun = true)
         repository = MovieRepositoryImpl(localSource, externalSource)
     }
 
@@ -66,7 +54,6 @@ class MovieRepositoryImplTest {
     fun `getPopularMovies updates local source when it is empty and returns new data from external`() = runTest {
         // Arrange
         coEvery { localSource.hasMovies() } returns false
-        coEvery { localSource.clear() } returns Unit
         val movies = mutableListOf(fakeMovie)
         coEvery { externalSource.getPopularMovies() } returns movies
         coEvery { localSource.addMovies(movies) } returns Unit
@@ -83,7 +70,6 @@ class MovieRepositoryImplTest {
     fun `getPopularMovies returns empty list if external source fails`() = runTest {
         // Arrange
         coEvery { localSource.hasMovies() } returns false
-        coEvery { localSource.clear() } returns Unit
         coEvery { externalSource.getPopularMovies() } throws Exception("error")
         coEvery { localSource.addMovies(any()) } returns Unit
         coEvery { localSource.getMovies() } returns mutableListOf()
