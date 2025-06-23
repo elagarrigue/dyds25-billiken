@@ -5,6 +5,7 @@ import edu.dyds.movies.domain.repository.MovieRepository
 import edu.dyds.movies.domain.usecase.home.GetPopularMoviesUseCase
 import edu.dyds.movies.domain.usecase.home.GetPopularMoviesUseCaseImpl
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
@@ -25,42 +26,24 @@ class GetPopularMoviesUseCaseTest {
     fun `getAllMovies should return movies sorted by rating`() = runTest {
         //Arrange
         val fakeMovies = listOf(
-            Movie(
-                id = 1,
-                title = "Bad Movie",
-                overview = "Some overview",
-                releaseDate = "2023-01-01",
-                poster = "poster.jpg",
-                backdrop = "backdrop.jpg",
-                originalTitle = "Original Movie 1",
-                originalLanguage = "en",
-                popularity = 3.2,
-                voteAverage = 3.3
-            ),
-            Movie(
-                id = 2,
-                title = "Regular Movie",
-                overview = "Some overview 2",
-                releaseDate = "2023-02-02",
-                poster = "poster.jpg",
-                backdrop = "backdrop.jpg",
-                originalTitle = "Original Movie 2",
-                originalLanguage = "es",
-                popularity = 5.2,
-                voteAverage = 5.7
-            ),
-            Movie(
-                id = 3,
-                title = "Good Movie",
-                overview = "Some overview 3",
-                releaseDate = "2023-03-03",
-                poster = "poster.jpg",
-                backdrop = "backdrop.jpg",
-                originalTitle = "Original Movie 3",
-                originalLanguage = "fr",
-                popularity = 8.5,
-                voteAverage = 9.0
-            )
+            mockk<Movie>{
+                every { id } returns 1
+                every { title } returns "Bad Movie"
+                every { popularity } returns 2.0
+                every { voteAverage } returns 2.3
+            },
+            mockk<Movie>{
+                every { id } returns 2
+                every { title } returns "Regular Movie"
+                every { popularity } returns 5.0
+                every { voteAverage } returns 5.3
+            },
+            mockk<Movie>{
+                every { id } returns 3
+                every { title } returns "Good Movie"
+                every { popularity } returns 9.0
+                every { voteAverage } returns 9.3
+            }
         )
         coEvery { movieRepository.getPopularMovies() } returns fakeMovies
 
@@ -89,42 +72,21 @@ class GetPopularMoviesUseCaseTest {
     fun `getAllMovies should keep order for movies with same rating`() = runTest {
         // Arrange
         val fakeMovies = listOf(
-            Movie(
-                id = 1,
-                title = "Movie1",
-                overview = "Some overview",
-                releaseDate = "2023-01-01",
-                poster = "poster.jpg",
-                backdrop = "backdrop.jpg",
-                originalTitle = "Original Movie 1",
-                originalLanguage = "en",
-                popularity = 5.0,
-                voteAverage = 5.0
-            ),
-            Movie(
-                id = 2,
-                title = "Movie2",
-                overview = "Some overview 2",
-                releaseDate = "2023-02-02",
-                poster = "poster.jpg",
-                backdrop = "backdrop.jpg",
-                originalTitle = "Original Movie 2",
-                originalLanguage = "es",
-                popularity = 5.0,
-                voteAverage = 5.0
-            ),
-            Movie(
-                id = 3,
-                title = "Movie3",
-                overview = "Some overview 3",
-                releaseDate = "2023-03-03",
-                poster = "poster.jpg",
-                backdrop = "backdrop.jpg",
-                originalTitle = "Original Movie 3",
-                originalLanguage = "fr",
-                popularity = 5.0,
-                voteAverage = 5.0
-            )
+            mockk<Movie>{
+                every { title } returns "Movie1"
+                every { popularity } returns 5.0
+                every { voteAverage } returns 5.3
+            },
+            mockk<Movie>{
+                every { title } returns "Movie2"
+                every { popularity } returns 5.0
+                every { voteAverage } returns 5.3
+            },
+            mockk<Movie>{
+                every { title } returns "Movie3"
+                every { popularity } returns 5.0
+                every { voteAverage } returns 5.3
+            }
         )
         coEvery { movieRepository.getPopularMovies() } returns fakeMovies
 
