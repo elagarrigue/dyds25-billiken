@@ -1,5 +1,6 @@
-package edu.dyds.movies.data.external
+package edu.dyds.movies.data.external.tmdb
 
+import edu.dyds.movies.data.external.MoviesExternalSource
 import edu.dyds.movies.domain.entity.Movie
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -8,7 +9,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 
-class TMDBExternalSource(
+class TMDBExternalSourceImpl(
     private val tmdbHttpClient: HttpClient,
 ) : MoviesExternalSource {
 
