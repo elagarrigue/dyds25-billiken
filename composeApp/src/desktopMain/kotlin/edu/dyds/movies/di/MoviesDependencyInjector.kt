@@ -4,6 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import edu.dyds.movies.data.MovieRepositoryImpl
 import edu.dyds.movies.data.external.MoviesExternalSource
+import edu.dyds.movies.data.external.MoviesExternalSourceBroker
+import edu.dyds.movies.data.external.omdb.OMDBMoviesExternalSource
+import edu.dyds.movies.data.external.omdb.OMDBMoviesExternalSourceImpl
 import edu.dyds.movies.data.external.tmdb.TMDBExternalSourceImpl
 import edu.dyds.movies.data.local.LocalCache
 import edu.dyds.movies.data.local.MoviesLocalSource
@@ -21,7 +24,8 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
-private const val API_KEY = "d18da1b5da16397619c688b0263cd281"
+private const val TMDB_API_KEY = "d18da1b5da16397619c688b0263cd281"
+private const val OMDB_API_KEY = "a96e7f78"
 
 object MoviesDependencyInjector {
 
@@ -36,7 +40,26 @@ object MoviesDependencyInjector {
                 url {
                     protocol = URLProtocol.HTTPS
                     host = "api.themoviedb.org"
-                    parameters.append("api_key", API_KEY)
+                    parameters.append("api_key", TMDB_API_KEY)
+                }
+            }
+            install(HttpTimeout) {
+                requestTimeoutMillis = 5000
+            }
+        }
+
+    private val omdbHttpClient =
+        HttpClient {
+            install(ContentNegotiation) {
+                json(Json {
+                    ignoreUnknownKeys = true
+                })
+            }
+            install(DefaultRequest) {
+                url {
+                    protocol = URLProtocol.HTTPS
+                    host = "www.omdbapi.com"
+                    parameters.append("api_key", OMDB_API_KEY)
                 }
             }
             install(HttpTimeout) {
@@ -54,6 +77,9 @@ object MoviesDependencyInjector {
 
     private val popularMoviesUseCase: GetPopularMoviesUseCase = GetPopularMoviesUseCaseImpl(repositoryImpl)
 
+    private val omdbExternalSource : OMDBMoviesExternalSource = OMDBMoviesExternalSourceImpl(omdbHttpClient)
+
+    //private val moviesExternalSourceBroker : OMDBMoviesExternalSource = MoviesExternalSourceBroker(tmdbExternalSource,omdbExternalSource)
     @Composable
     fun getDetailsViewModel(): DetailViewModel {
         return viewModel { DetailViewModel(movieDetailsUseCase) }
