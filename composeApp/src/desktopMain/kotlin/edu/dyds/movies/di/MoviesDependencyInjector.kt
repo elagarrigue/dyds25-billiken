@@ -58,7 +58,7 @@ object MoviesDependencyInjector {
                 url {
                     protocol = URLProtocol.HTTPS
                     host = "www.omdbapi.com"
-                    parameters.append("api_key", OMDB_API_KEY)
+                    parameters.append("apikey", OMDB_API_KEY)
                 }
             }
             install(HttpTimeout) {
@@ -81,7 +81,6 @@ object MoviesDependencyInjector {
     private val movieDetailsUseCase: GetMovieDetailsUseCase = GetMovieDetailsUseCaseImpl(repositoryImpl)
 
     private val popularMoviesUseCase: GetPopularMoviesUseCase = GetPopularMoviesUseCaseImpl(repositoryImpl)
-
 
     @Composable
     fun getDetailsViewModel(): DetailViewModel {

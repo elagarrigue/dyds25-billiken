@@ -18,10 +18,11 @@ class TMDBExternalSourceImpl(
         return remoteResult.results.map { it.toDomainMovie() }
     }
 
-    override suspend fun getMovieByTitle(title: String): Movie {
-        val remoteMovie: RemoteMovie = tmdbHttpClient.get("/3/search/movie?query=$title").body()
-        return remoteMovie.toDomainMovie()
-    }
+    override suspend fun getMovieByTitle(title: String): Movie =
+        getTMDBMovieDetails(title).apply { println(this) }.results.first().toDomainMovie()
+
+    private suspend fun getTMDBMovieDetails(title : String): RemoteResult =
+        tmdbHttpClient.get("/3/search/movie?query=$title").body()
 }
 
 @Serializable
