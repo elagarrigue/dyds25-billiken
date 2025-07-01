@@ -8,6 +8,7 @@ import edu.dyds.movies.data.external.MoviesExternalSourceBroker
 import edu.dyds.movies.data.external.omdb.OMDBMoviesExternalSource
 import edu.dyds.movies.data.external.omdb.OMDBMoviesExternalSourceImpl
 import edu.dyds.movies.data.external.tmdb.TMDBExternalSourceImpl
+import edu.dyds.movies.data.external.tmdb.TMDBMoviesExternalSource
 import edu.dyds.movies.data.local.LocalCache
 import edu.dyds.movies.data.local.MoviesLocalSource
 import edu.dyds.movies.domain.repository.MovieRepository
@@ -67,19 +68,21 @@ object MoviesDependencyInjector {
             }
         }
 
-    private val tmdbExternalSource: MoviesExternalSource = TMDBExternalSourceImpl(tmdbHttpClient)
+    private val tmdbExternalSource = TMDBExternalSourceImpl(tmdbHttpClient)
 
+    private val omdbExternalSource : OMDBMoviesExternalSource = OMDBMoviesExternalSourceImpl(omdbHttpClient)
+
+    private val moviesExternalSourceBroker : OMDBMoviesExternalSource = MoviesExternalSourceBroker(tmdbExternalSource,omdbExternalSource)
+    
     private val localCache: MoviesLocalSource = LocalCache()
 
-    private val repositoryImpl: MovieRepository = MovieRepositoryImpl(localCache, tmdbExternalSource)
+    private val repositoryImpl: MovieRepository = MovieRepositoryImpl(localCache, tmdbExternalSource, moviesExternalSourceBroker)
 
     private val movieDetailsUseCase: GetMovieDetailsUseCase = GetMovieDetailsUseCaseImpl(repositoryImpl)
 
     private val popularMoviesUseCase: GetPopularMoviesUseCase = GetPopularMoviesUseCaseImpl(repositoryImpl)
 
-    private val omdbExternalSource : OMDBMoviesExternalSource = OMDBMoviesExternalSourceImpl(omdbHttpClient)
 
-    //private val moviesExternalSourceBroker : OMDBMoviesExternalSource = MoviesExternalSourceBroker(tmdbExternalSource,omdbExternalSource)
     @Composable
     fun getDetailsViewModel(): DetailViewModel {
         return viewModel { DetailViewModel(movieDetailsUseCase) }
