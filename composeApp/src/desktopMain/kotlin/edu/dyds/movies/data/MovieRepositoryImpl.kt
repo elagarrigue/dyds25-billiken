@@ -1,18 +1,21 @@
 package edu.dyds.movies.data
 
 import edu.dyds.movies.data.external.MoviesExternalSource
+import edu.dyds.movies.data.external.omdb.OMDBMoviesExternalSource
+import edu.dyds.movies.data.external.tmdb.TMDBMoviesExternalSource
 import edu.dyds.movies.data.local.MoviesLocalSource
 import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.repository.MovieRepository
 
 class MovieRepositoryImpl(
     private val moviesLocalSource: MoviesLocalSource,
-    private val moviesExternalSource: MoviesExternalSource
+    private val TMDB: TMDBMoviesExternalSource,
+    private val OMDB: OMDBMoviesExternalSource
 ) : MovieRepository {
 
-    override suspend fun getMovieDetail(id: Int): Movie? {
+    override suspend fun getMovieByTitle( title: String): Movie? {
         return try {
-            moviesExternalSource.getMovieDetailsDB(id)
+            OMDB.getMovieByTitle(title)
         } catch (e: Exception) { null }
     }
 
@@ -20,7 +23,7 @@ class MovieRepositoryImpl(
         if (!moviesLocalSource.hasMovies()) {
             try {
                     moviesLocalSource.clear()
-                    moviesLocalSource.addMovies(moviesExternalSource.getPopularMovies())
+                    moviesLocalSource.addMovies(TMDB.getPopularMovies())
             } catch (e: Exception) {
                 emptyList<Movie>()
             }
