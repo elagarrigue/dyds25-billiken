@@ -5,8 +5,8 @@ import edu.dyds.movies.domain.repository.MovieRepository
 
 class GetMovieDetailsUseCaseImpl(private val movieRepository: MovieRepository) : GetMovieDetailsUseCase {
 
-    override suspend fun getMovieDetail(id: Int): Movie? {
-        return movieRepository.getMovieDetail(id)
+    override suspend fun getMovieDetail(title: String): Movie? {
+        return movieRepository.getMovieByTitle(title)
     }
 
 }
