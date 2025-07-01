@@ -16,7 +16,7 @@ class OMDBMoviesExternalSourceImpl(
 
     private suspend fun getOMDBMovieDetails(title: String): RemoteMovie =
         omdbHttpClient.get(urlString = "/?t=$title").body()
-    }
+}
 
 @Serializable
 data class RemoteMovie(
