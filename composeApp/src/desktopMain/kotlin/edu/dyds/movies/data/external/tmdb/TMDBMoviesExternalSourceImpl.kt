@@ -1,6 +1,7 @@
 package edu.dyds.movies.data.external.tmdb
 
 import edu.dyds.movies.data.external.MoviesExternalSource
+import edu.dyds.movies.data.external.omdb.OMDBMoviesExternalSource
 import edu.dyds.movies.domain.entity.Movie
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -11,15 +12,15 @@ import kotlinx.serialization.Serializable
 
 class TMDBExternalSourceImpl(
     private val tmdbHttpClient: HttpClient,
-) : MoviesExternalSource {
+) : OMDBMoviesExternalSource, TMDBMoviesExternalSource {
 
     override suspend fun getPopularMovies(): List<Movie> {
         val remoteResult: RemoteResult = tmdbHttpClient.get("/3/discover/movie?sort_by=popularity.desc").body()
         return remoteResult.results.map { it.toDomainMovie() }
     }
 
-    override suspend fun getMovieDetailsDB(id: Int): Movie {
-        val remoteMovie: RemoteMovie = tmdbHttpClient.get("/3/movie/$id").body()
+    override suspend fun getMovieByTitle(title: String): Movie {
+        val remoteMovie: RemoteMovie = tmdbHttpClient.get("/3/search/movie?query=$title").body()
         return remoteMovie.toDomainMovie()
     }
 }

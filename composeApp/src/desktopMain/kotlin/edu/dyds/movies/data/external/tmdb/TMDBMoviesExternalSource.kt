@@ -4,4 +4,5 @@ import edu.dyds.movies.domain.entity.Movie
 
 interface TMDBMoviesExternalSource {
     suspend fun getPopularMovies(): List<Movie>
+
 }
