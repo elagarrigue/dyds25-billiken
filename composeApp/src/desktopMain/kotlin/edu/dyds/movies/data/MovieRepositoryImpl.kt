@@ -9,12 +9,12 @@ import edu.dyds.movies.domain.repository.MovieRepository
 class MovieRepositoryImpl(
     private val moviesLocalSource: MoviesLocalSource,
     private val tmdb: TMDBMoviesExternalSource,
-    private val omdb: OMDBMoviesExternalSource
+    private val externalSourceBroker: OMDBMoviesExternalSource
 ) : MovieRepository {
 
     override suspend fun getMovieByTitle(title: String): Movie? {
         return try {
-            omdb.getMovieByTitle(title)
+            externalSourceBroker.getMovieByTitle(title)
         } catch (e: Exception) {
             null
         }

@@ -18,7 +18,7 @@ class MovieRepositoryImplTest {
 
     private lateinit var localSource: MoviesLocalSource
     private lateinit var tmdb: TMDBMoviesExternalSource
-    private lateinit var omdb: OMDBMoviesExternalSource
+    private lateinit var externalSourceBroker: OMDBMoviesExternalSource
     private lateinit var repository: MovieRepositoryImpl
     private val fakeMovie: Movie = mockk()
 
@@ -26,14 +26,14 @@ class MovieRepositoryImplTest {
     fun setUp() {
         localSource = mockk(relaxUnitFun = true)
         tmdb = mockk(relaxUnitFun = true)
-        omdb = mockk(relaxUnitFun = true)
-        repository = MovieRepositoryImpl(localSource, tmdb, omdb)
+        externalSourceBroker = mockk(relaxUnitFun = true)
+        repository = MovieRepositoryImpl(localSource, tmdb, externalSourceBroker)
     }
 
     @Test
-    fun `getMovieByTitle returns movie from OMDB source`() = runTest {
+    fun `getMovieByTitle returns movie from Broker`() = runTest {
         // Arrange
-        coEvery { omdb.getMovieByTitle("MovieEjemplo") } returns fakeMovie
+        coEvery { externalSourceBroker.getMovieByTitle("MovieEjemplo") } returns fakeMovie
 
         // Act
         val result = repository.getMovieByTitle("MovieEjemplo")
@@ -43,9 +43,9 @@ class MovieRepositoryImplTest {
     }
 
     @Test
-    fun `getMovieByTitle returns null when OMDB source throws exception`() = runTest {
+    fun `getMovieByTitle returns null when Broker throws exception`() = runTest {
         // Arrange
-        coEvery { omdb.getMovieByTitle("MovieEjemplo") } throws Exception("error")
+        coEvery { externalSourceBroker.getMovieByTitle("MovieEjemplo") } throws Exception("error")
 
         // Act
         val result = repository.getMovieByTitle("MovieEjemplo")
