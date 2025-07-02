@@ -29,10 +29,10 @@ class GetMovieDetailsUseCaseTest {
         val fakeMovie = mockk<Movie>{
             every { id } returns 1
         }
-        coEvery { movieRepository.getMovieDetail(1) } returns fakeMovie
+        coEvery { movieRepository.getMovieByTitle("MovieEjemplo") } returns fakeMovie
 
         // Act
-        val result = useCase.getMovieDetail(1)
+        val result = useCase.getMovieDetail("MovieEjemplo")
 
         // Assert
         assertEquals(fakeMovie, result)
@@ -41,10 +41,10 @@ class GetMovieDetailsUseCaseTest {
     @Test
     fun `getMovieDetail should return null when repository returns null`() = runTest {
         // Arrange
-        coEvery { movieRepository.getMovieDetail(1) } returns null
+        coEvery { movieRepository.getMovieByTitle("MovieEjemplo") } returns null
 
         // Act
-        val result = useCase.getMovieDetail(1)
+        val result = useCase.getMovieDetail("MovieEjemplo")
 
         // Assert
         assertNull(result)
