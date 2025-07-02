@@ -1,7 +1,8 @@
 package data
 
 import edu.dyds.movies.data.MovieRepositoryImpl
-import edu.dyds.movies.data.external.MoviesExternalSource
+import edu.dyds.movies.data.external.omdb.OMDBMoviesExternalSource
+import edu.dyds.movies.data.external.tmdb.TMDBMoviesExternalSource
 import edu.dyds.movies.data.local.MoviesLocalSource
 import edu.dyds.movies.domain.entity.Movie
 import io.mockk.coEvery
@@ -16,47 +17,49 @@ import kotlin.test.assertNull
 class MovieRepositoryImplTest {
 
     private lateinit var localSource: MoviesLocalSource
-    private lateinit var externalSource: MoviesExternalSource
+    private lateinit var tmdb: TMDBMoviesExternalSource
+    private lateinit var omdb: OMDBMoviesExternalSource
     private lateinit var repository: MovieRepositoryImpl
     private val fakeMovie: Movie = mockk()
 
     @BeforeTest
     fun setUp() {
         localSource = mockk(relaxUnitFun = true)
-        externalSource = mockk(relaxUnitFun = true)
-        repository = MovieRepositoryImpl(localSource, externalSource)
+        tmdb = mockk(relaxUnitFun = true)
+        omdb = mockk(relaxUnitFun = true)
+        repository = MovieRepositoryImpl(localSource, tmdb, omdb)
     }
 
     @Test
-    fun `getMovieDetail returns movie from external source`() = runTest {
+    fun `getMovieByTitle returns movie from OMDB source`() = runTest {
         // Arrange
-        coEvery { externalSource.getMovieDetailsDB(1) } returns fakeMovie
+        coEvery { omdb.getMovieByTitle("MovieEjemplo") } returns fakeMovie
 
         // Act
-        val result = repository.getMovieDetail(1)
+        val result = repository.getMovieByTitle("MovieEjemplo")
 
         // Assert
         assertEquals(fakeMovie, result)
     }
 
     @Test
-    fun `getMovieDetail returns null when no movie with that name`() = runTest {
+    fun `getMovieByTitle returns null when OMDB source throws exception`() = runTest {
         // Arrange
-        coEvery { externalSource.getMovieDetailsDB(1) } throws Exception("error")
+        coEvery { omdb.getMovieByTitle("MovieEjemplo") } throws Exception("error")
 
         // Act
-        val result = repository.getMovieDetail(1)
+        val result = repository.getMovieByTitle("MovieEjemplo")
 
         // Assert
         assertNull(result)
     }
 
     @Test
-    fun `getPopularMovies updates local source when it is empty and returns new data from external`() = runTest {
+    fun `getPopularMovies updates local source when it is empty and returns new data from TMDB`() = runTest {
         // Arrange
         coEvery { localSource.hasMovies() } returns false
         val movies = mutableListOf(fakeMovie)
-        coEvery { externalSource.getPopularMovies() } returns movies
+        coEvery { tmdb.getPopularMovies() } returns movies
         coEvery { localSource.getMovies() } returns movies
 
         // Act
@@ -68,10 +71,10 @@ class MovieRepositoryImplTest {
     }
 
     @Test
-    fun `getPopularMovies returns empty list if external source fails`() = runTest {
+    fun `getPopularMovies returns empty list if TMDB source fails`() = runTest {
         // Arrange
         coEvery { localSource.hasMovies() } returns false
-        coEvery { externalSource.getPopularMovies() } throws Exception("error")
+        coEvery { tmdb.getPopularMovies() } throws Exception("error")
         coEvery { localSource.getMovies() } returns mutableListOf()
 
         // Act
