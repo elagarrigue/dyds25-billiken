@@ -11,8 +11,12 @@ class OMDBMoviesExternalSourceImpl(
     private val omdbHttpClient: HttpClient,
 ) : OMDBMoviesExternalSource {
 
-    override suspend fun getMovieByTitle(title: String): Movie =
-        getOMDBMovieDetails(title).toDomainMovie()
+    override suspend fun getMovieByTitle(title: String): Movie? =
+        try {
+            getOMDBMovieDetails(title).toDomainMovie()
+        } catch (e: Exception) {
+            null
+        }
 
     private suspend fun getOMDBMovieDetails(title: String): RemoteMovie =
         omdbHttpClient.get("/?t=$title").body()

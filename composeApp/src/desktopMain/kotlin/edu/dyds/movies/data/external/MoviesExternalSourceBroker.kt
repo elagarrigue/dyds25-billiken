@@ -8,10 +8,23 @@ class MoviesExternalSourceBroker(
     private val omdb: OMDBMoviesExternalSource
 ) : OMDBMoviesExternalSource {
 
-    override suspend fun getMovieByTitle(title: String): Movie {
+    override suspend fun getMovieByTitle(title: String): Movie? {
         val tmdbMovie = tmdb.getMovieByTitle(title)
         val omdbMovie = omdb.getMovieByTitle(title)
-        return buildMovie(tmdbMovie, omdbMovie)
+
+        return when {
+            tmdbMovie != null && omdbMovie != null -> buildMovie(tmdbMovie, omdbMovie)
+
+            tmdbMovie != null -> tmdbMovie.copy(
+                overview = "TMDB: ${tmdbMovie.overview}"
+            )
+
+            omdbMovie != null -> omdbMovie.copy(
+                overview = "OMDB: ${omdbMovie.overview}"
+            )
+
+            else -> null
+        }
     }
 
     private fun buildMovie(
