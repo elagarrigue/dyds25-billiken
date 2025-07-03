@@ -26,7 +26,7 @@ class GetMovieDetailsUseCaseTest {
     @Test
     fun `getMovieDetail should return movie when repository returns movie`() = runTest {
         // Arrange
-        val fakeMovie = mockk<Movie>{
+        val fakeMovie = mockk<Movie> {
             every { id } returns 1
         }
         coEvery { movieRepository.getMovieByTitle("MovieEjemplo") } returns fakeMovie
