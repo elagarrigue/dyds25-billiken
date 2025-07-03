@@ -49,7 +49,7 @@ class DetailViewModelTest {
         }
 
         //Act
-        viewModel.getMovieDetail(1)
+        viewModel.getMovieDetail("a")
         advanceUntilIdle()
 
         //Assert
@@ -71,7 +71,7 @@ class DetailViewModelTest {
         }
 
         //Act
-        viewModel.getMovieDetail(1)
+        viewModel.getMovieDetail("a")
         advanceUntilIdle()
 
         //Assert

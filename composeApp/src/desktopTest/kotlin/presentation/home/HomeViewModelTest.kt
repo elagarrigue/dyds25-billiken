@@ -21,8 +21,8 @@ import kotlin.test.assertTrue
 class HomeViewModelTest {
     private lateinit var useCase: GetPopularMoviesUseCase
     private lateinit var viewModel: HomeViewModel
-    private val fakeQualifiedMovie1 : QualifiedMovie = mockk()
-    private val fakeQualifiedMovie2 : QualifiedMovie = mockk()
+    private val fakeQualifiedMovie1: QualifiedMovie = mockk()
+    private val fakeQualifiedMovie2: QualifiedMovie = mockk()
     private val mockMovies: List<QualifiedMovie> = listOf(fakeQualifiedMovie1, fakeQualifiedMovie2)
     private val collectedStates = mutableListOf<HomeViewModel.MoviesUiState>()
     private val testDispatcher = StandardTestDispatcher()
