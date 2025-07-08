@@ -1,7 +1,7 @@
 package data.external
 
 import edu.dyds.movies.data.external.MoviesExternalSourceBroker
-import edu.dyds.movies.data.external.omdb.OMDBMoviesExternalSource
+import edu.dyds.movies.data.external.MovieDetailExternalSource
 import edu.dyds.movies.domain.entity.Movie
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -13,8 +13,8 @@ import kotlin.test.assertNull
 
 class MoviesExternalSourceBrokerTest {
 
-    private lateinit var tmdb: OMDBMoviesExternalSource
-    private lateinit var omdb: OMDBMoviesExternalSource
+    private lateinit var tmdbExternalSource: MovieDetailExternalSource
+    private lateinit var omdbExternalSource: MovieDetailExternalSource
     private lateinit var broker: MoviesExternalSourceBroker
 
     private val tmdbMovie = Movie(
@@ -45,16 +45,16 @@ class MoviesExternalSourceBrokerTest {
 
     @BeforeTest
     fun setUp() {
-        tmdb = mockk()
-        omdb = mockk()
-        broker = MoviesExternalSourceBroker(tmdb, omdb)
+        tmdbExternalSource = mockk()
+        omdbExternalSource = mockk()
+        broker = MoviesExternalSourceBroker(tmdbExternalSource, omdbExternalSource)
     }
 
     @Test
     fun `returns merged movie when both sources return movie`() = runTest {
         // Arrange
-        coEvery { tmdb.getMovieByTitle("Test Movie") } returns tmdbMovie
-        coEvery { omdb.getMovieByTitle("Test Movie") } returns omdbMovie
+        coEvery { tmdbExternalSource.getMovieByTitle("Test Movie") } returns tmdbMovie
+        coEvery { omdbExternalSource.getMovieByTitle("Test Movie") } returns omdbMovie
 
         // Act
         val result = broker.getMovieByTitle("Test Movie")
@@ -78,8 +78,8 @@ class MoviesExternalSourceBrokerTest {
     @Test
     fun `returns tmdb movie when only tmdb returns movie`() = runTest {
         // Arrange
-        coEvery { tmdb.getMovieByTitle("Test Movie") } returns tmdbMovie
-        coEvery { omdb.getMovieByTitle("Test Movie") } returns null
+        coEvery { tmdbExternalSource.getMovieByTitle("Test Movie") } returns tmdbMovie
+        coEvery { omdbExternalSource.getMovieByTitle("Test Movie") } returns null
 
         // Act
         val result = broker.getMovieByTitle("Test Movie")
@@ -92,8 +92,8 @@ class MoviesExternalSourceBrokerTest {
     @Test
     fun `returns omdb movie when only omdb returns movie`() = runTest {
         // Arrange
-        coEvery { tmdb.getMovieByTitle("Test Movie") } returns null
-        coEvery { omdb.getMovieByTitle("Test Movie") } returns omdbMovie
+        coEvery { tmdbExternalSource.getMovieByTitle("Test Movie") } returns null
+        coEvery { omdbExternalSource.getMovieByTitle("Test Movie") } returns omdbMovie
 
         // Act
         val result = broker.getMovieByTitle("Test Movie")
@@ -106,8 +106,8 @@ class MoviesExternalSourceBrokerTest {
     @Test
     fun `returns null when both sources return null`() = runTest {
         // Arrange
-        coEvery { tmdb.getMovieByTitle("Test Movie") } returns null
-        coEvery { omdb.getMovieByTitle("Test Movie") } returns null
+        coEvery { tmdbExternalSource.getMovieByTitle("Test Movie") } returns null
+        coEvery { omdbExternalSource.getMovieByTitle("Test Movie") } returns null
 
         // Act
         val result = broker.getMovieByTitle("Test Movie")

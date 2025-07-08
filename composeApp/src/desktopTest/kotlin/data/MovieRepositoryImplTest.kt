@@ -1,7 +1,7 @@
 package data
 
 import edu.dyds.movies.data.MovieRepositoryImpl
-import edu.dyds.movies.data.external.omdb.OMDBMoviesExternalSource
+import edu.dyds.movies.data.external.MovieDetailExternalSource
 import edu.dyds.movies.data.external.tmdb.TMDBMoviesExternalSource
 import edu.dyds.movies.data.local.MoviesLocalSource
 import edu.dyds.movies.domain.entity.Movie
@@ -17,23 +17,23 @@ import kotlin.test.assertNull
 class MovieRepositoryImplTest {
 
     private lateinit var localSource: MoviesLocalSource
-    private lateinit var tmdb: TMDBMoviesExternalSource
-    private lateinit var externalSourceBroker: OMDBMoviesExternalSource
+    private lateinit var popularMoviesExternalSource: TMDBMoviesExternalSource
+    private lateinit var movieDetailExternalSource: MovieDetailExternalSource
     private lateinit var repository: MovieRepositoryImpl
     private val fakeMovie: Movie = mockk()
 
     @BeforeTest
     fun setUp() {
         localSource = mockk(relaxUnitFun = true)
-        tmdb = mockk(relaxUnitFun = true)
-        externalSourceBroker = mockk(relaxUnitFun = true)
-        repository = MovieRepositoryImpl(localSource, tmdb, externalSourceBroker)
+        popularMoviesExternalSource = mockk(relaxUnitFun = true)
+        movieDetailExternalSource = mockk(relaxUnitFun = true)
+        repository = MovieRepositoryImpl(localSource, popularMoviesExternalSource, movieDetailExternalSource)
     }
 
     @Test
     fun `getMovieByTitle returns movie from Broker`() = runTest {
         // Arrange
-        coEvery { externalSourceBroker.getMovieByTitle("MovieEjemplo") } returns fakeMovie
+        coEvery { movieDetailExternalSource.getMovieByTitle("MovieEjemplo") } returns fakeMovie
 
         // Act
         val result = repository.getMovieByTitle("MovieEjemplo")
@@ -45,7 +45,7 @@ class MovieRepositoryImplTest {
     @Test
     fun `getMovieByTitle returns null when Broker throws exception`() = runTest {
         // Arrange
-        coEvery { externalSourceBroker.getMovieByTitle("MovieEjemplo") } throws Exception("error")
+        coEvery { movieDetailExternalSource.getMovieByTitle("MovieEjemplo") } throws Exception("error")
 
         // Act
         val result = repository.getMovieByTitle("MovieEjemplo")
@@ -59,7 +59,7 @@ class MovieRepositoryImplTest {
         // Arrange
         coEvery { localSource.hasMovies() } returns false
         val movies = mutableListOf(fakeMovie)
-        coEvery { tmdb.getPopularMovies() } returns movies
+        coEvery { popularMoviesExternalSource.getPopularMovies() } returns movies
         coEvery { localSource.getMovies() } returns movies
 
         // Act
@@ -74,7 +74,7 @@ class MovieRepositoryImplTest {
     fun `getPopularMovies returns empty list if TMDB source fails`() = runTest {
         // Arrange
         coEvery { localSource.hasMovies() } returns false
-        coEvery { tmdb.getPopularMovies() } throws Exception("error")
+        coEvery { popularMoviesExternalSource.getPopularMovies() } throws Exception("error")
         coEvery { localSource.getMovies() } returns mutableListOf()
 
         // Act

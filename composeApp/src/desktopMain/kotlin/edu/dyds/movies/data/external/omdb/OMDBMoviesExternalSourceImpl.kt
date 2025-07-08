@@ -1,5 +1,6 @@
 package edu.dyds.movies.data.external.omdb
 
+import edu.dyds.movies.data.external.MovieDetailExternalSource
 import edu.dyds.movies.domain.entity.Movie
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -9,7 +10,7 @@ import kotlinx.serialization.Serializable
 
 class OMDBMoviesExternalSourceImpl(
     private val omdbHttpClient: HttpClient,
-) : OMDBMoviesExternalSource {
+) : MovieDetailExternalSource {
 
     override suspend fun getMovieByTitle(title: String): Movie? =
         try {
