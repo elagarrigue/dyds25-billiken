@@ -3,8 +3,8 @@ package edu.dyds.movies.di
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import edu.dyds.movies.data.MovieRepositoryImpl
-import edu.dyds.movies.data.external.MoviesExternalSourceBroker
 import edu.dyds.movies.data.external.MovieDetailExternalSource
+import edu.dyds.movies.data.external.MoviesExternalSourceBroker
 import edu.dyds.movies.data.external.omdb.OMDBMoviesExternalSourceImpl
 import edu.dyds.movies.data.external.tmdb.TMDBExternalSourceImpl
 import edu.dyds.movies.data.local.LocalCache

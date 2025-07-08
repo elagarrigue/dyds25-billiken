@@ -1,7 +1,7 @@
 package data.external
 
-import edu.dyds.movies.data.external.MoviesExternalSourceBroker
 import edu.dyds.movies.data.external.MovieDetailExternalSource
+import edu.dyds.movies.data.external.MoviesExternalSourceBroker
 import edu.dyds.movies.domain.entity.Movie
 import io.mockk.coEvery
 import io.mockk.mockk

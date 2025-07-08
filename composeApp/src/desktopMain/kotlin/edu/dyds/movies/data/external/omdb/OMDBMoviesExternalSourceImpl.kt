@@ -13,11 +13,8 @@ class OMDBMoviesExternalSourceImpl(
 ) : MovieDetailExternalSource {
 
     override suspend fun getMovieByTitle(title: String): Movie? =
-        try {
-            getOMDBMovieDetails(title).toDomainMovie()
-        } catch (e: Exception) {
-            null
-        }
+        getOMDBMovieDetails(title).toDomainMovie()
+
 
     private suspend fun getOMDBMovieDetails(title: String): RemoteMovie =
         omdbHttpClient.get("/?t=$title").body()

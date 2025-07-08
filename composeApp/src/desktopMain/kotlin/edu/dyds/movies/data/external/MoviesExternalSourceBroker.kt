@@ -8,8 +8,17 @@ class MoviesExternalSourceBroker(
 ) : MovieDetailExternalSource {
 
     override suspend fun getMovieByTitle(title: String): Movie? {
-        val tmdbMovie = tmdbExternalSource.getMovieByTitle(title)
-        val omdbMovie = omdbExternalSource.getMovieByTitle(title)
+        val tmdbMovie = try {
+            tmdbExternalSource.getMovieByTitle(title)
+        } catch (e: Exception) {
+            null
+        }
+
+        val omdbMovie = try {
+            omdbExternalSource.getMovieByTitle(title)
+        } catch (e: Exception) {
+            null
+        }
 
         return when {
             tmdbMovie != null && omdbMovie != null -> buildMovie(tmdbMovie, omdbMovie)
