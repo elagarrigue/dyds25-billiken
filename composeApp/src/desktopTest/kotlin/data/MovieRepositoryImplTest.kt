@@ -2,7 +2,7 @@ package data
 
 import edu.dyds.movies.data.MovieRepositoryImpl
 import edu.dyds.movies.data.external.MovieDetailExternalSource
-import edu.dyds.movies.data.external.tmdb.TMDBMoviesExternalSource
+import edu.dyds.movies.data.external.PopularMoviesExternalSource
 import edu.dyds.movies.data.local.MoviesLocalSource
 import edu.dyds.movies.domain.entity.Movie
 import io.mockk.coEvery
@@ -17,7 +17,7 @@ import kotlin.test.assertNull
 class MovieRepositoryImplTest {
 
     private lateinit var localSource: MoviesLocalSource
-    private lateinit var popularMoviesExternalSource: TMDBMoviesExternalSource
+    private lateinit var popularMoviesExternalSource: PopularMoviesExternalSource
     private lateinit var movieDetailExternalSource: MovieDetailExternalSource
     private lateinit var repository: MovieRepositoryImpl
     private val fakeMovie: Movie = mockk()

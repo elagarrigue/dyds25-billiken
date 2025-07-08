@@ -1,8 +1,8 @@
-package edu.dyds.movies.data.external.tmdb
+package edu.dyds.movies.data.external
 
 import edu.dyds.movies.domain.entity.Movie
 
-interface TMDBMoviesExternalSource {
+interface PopularMoviesExternalSource {
     suspend fun getPopularMovies(): List<Movie>
 
 }
