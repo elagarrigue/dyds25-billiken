@@ -76,10 +76,10 @@ class MoviesExternalSourceBrokerTest {
     }
 
     @Test
-    fun `returns tmdb movie when only tmdb returns movie`() = runTest {
+    fun `returns tmdb movie when tmdb returns movie and omdb throws Exception`() = runTest {
         // Arrange
         coEvery { tmdbExternalSource.getMovieByTitle("Test Movie") } returns tmdbMovie
-        coEvery { omdbExternalSource.getMovieByTitle("Test Movie") } returns null
+        coEvery { omdbExternalSource.getMovieByTitle("Test Movie") } throws Exception("OMDB service failed")
 
         // Act
         val result = broker.getMovieByTitle("Test Movie")
@@ -90,9 +90,9 @@ class MoviesExternalSourceBrokerTest {
     }
 
     @Test
-    fun `returns omdb movie when only omdb returns movie`() = runTest {
+    fun `returns omdb movie when omdb returns movie and tmdb throws Exception`() = runTest {
         // Arrange
-        coEvery { tmdbExternalSource.getMovieByTitle("Test Movie") } returns null
+        coEvery { tmdbExternalSource.getMovieByTitle("Test Movie") } throws Exception("TMDB service failed")
         coEvery { omdbExternalSource.getMovieByTitle("Test Movie") } returns omdbMovie
 
         // Act
@@ -104,10 +104,10 @@ class MoviesExternalSourceBrokerTest {
     }
 
     @Test
-    fun `returns null when both sources return null`() = runTest {
+    fun `returns null when both sources throw Exception`() = runTest {
         // Arrange
-        coEvery { tmdbExternalSource.getMovieByTitle("Test Movie") } returns null
-        coEvery { omdbExternalSource.getMovieByTitle("Test Movie") } returns null
+        coEvery { tmdbExternalSource.getMovieByTitle("Test Movie") }  throws Exception("TMDB service failed")
+        coEvery { omdbExternalSource.getMovieByTitle("Test Movie") }  throws Exception("OMDB service failed")
 
         // Act
         val result = broker.getMovieByTitle("Test Movie")
