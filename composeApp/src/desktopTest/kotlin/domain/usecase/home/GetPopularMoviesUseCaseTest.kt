@@ -26,19 +26,19 @@ class GetPopularMoviesUseCaseTest {
     fun `getAllMovies should return movies sorted by rating`() = runTest {
         //Arrange
         val fakeMovies = listOf(
-            mockk<Movie>{
+            mockk<Movie> {
                 every { id } returns 1
                 every { title } returns "Bad Movie"
                 every { popularity } returns 2.0
                 every { voteAverage } returns 2.3
             },
-            mockk<Movie>{
+            mockk<Movie> {
                 every { id } returns 2
                 every { title } returns "Regular Movie"
                 every { popularity } returns 5.0
                 every { voteAverage } returns 5.3
             },
-            mockk<Movie>{
+            mockk<Movie> {
                 every { id } returns 3
                 every { title } returns "Good Movie"
                 every { popularity } returns 9.0
@@ -72,17 +72,17 @@ class GetPopularMoviesUseCaseTest {
     fun `getAllMovies should keep order for movies with same rating`() = runTest {
         // Arrange
         val fakeMovies = listOf(
-            mockk<Movie>{
+            mockk<Movie> {
                 every { title } returns "Movie1"
                 every { popularity } returns 5.0
                 every { voteAverage } returns 5.3
             },
-            mockk<Movie>{
+            mockk<Movie> {
                 every { title } returns "Movie2"
                 every { popularity } returns 5.0
                 every { voteAverage } returns 5.3
             },
-            mockk<Movie>{
+            mockk<Movie> {
                 every { title } returns "Movie3"
                 every { popularity } returns 5.0
                 every { voteAverage } returns 5.3
